@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BoardTile
 {
@@ -11,12 +12,16 @@ public class BoardTile
 
     public BoardTile(Vector2 tileGridPosition, Sprite sprite)
     {
-        tileGameObject = new GameObject("Tile", typeof(SpriteRenderer));
+        tileGameObject = new GameObject("Tile", typeof(SpriteRenderer), typeof(BoxCollider2D), typeof(Rigidbody2D));
         SpriteRenderer tileSpriteRenderer = tileGameObject.GetComponent<SpriteRenderer>();
         tileSpriteRenderer.sortingOrder = -1;
         tileSpriteRenderer.sprite = sprite;
-        tileGameObject.transform.position = tileGridPosition;
+        BoxCollider2D tileCollider = tileGameObject.GetComponent<BoxCollider2D>();
+        tileCollider.isTrigger = true;
+        tileCollider.size = Vector2.one;
+        tileGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
 
+        tileGameObject.transform.position = tileGridPosition;
         this.tileGridPosition = tileGridPosition;
         this.isBusy = false;
     }

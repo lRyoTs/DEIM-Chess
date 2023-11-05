@@ -5,11 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameManager Instance { get; private set; }
-    public const int upLimit = 8;
-    public const int downLimit = 0;
-    public const int leftLimit = 0;
-    public const int rightLimit = 8;
-
+    private Piece piece;
     private void Awake()
     {
         if (Instance != null) {
@@ -22,11 +18,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-        Piece piece = new Piece();
-    }
-
-    private void OnMouseDown()
-    {
-       
+        piece = new Piece();
     }
 }

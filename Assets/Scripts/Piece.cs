@@ -35,13 +35,20 @@ public class Piece
         return pieceGridPosition;
     }
 
-    public void CheckPosibleMoves() {
-        availableMoveList.Clear(); //Lets clear all previous posible moves
-        Vector2 posibleGridPosition = this.pieceGridPosition;
+    public void MoveToPosition(Vector2 gridPosition) {
 
-        //Check up
-        while (posibleGridPosition.y<GameManager.upLimit) {
-        
+        if (IsValidMove(gridPosition)) {
+            pieceGridPosition = gridPosition;
+            pieceGameObject.transform.position = pieceGridPosition;
         }
+    }
+
+    private bool IsValidMove(Vector2 gridPosition)
+    {
+        //Queen valid moves = same row || same column || diagonal move
+        if (gridPosition.x == pieceGridPosition.x || gridPosition.y == pieceGridPosition.y || (Mathf.Abs(gridPosition.x-pieceGridPosition.x)== Mathf.Abs(gridPosition.y - pieceGridPosition.y))) {
+            return true;
+        }
+        return false;
     }
 }

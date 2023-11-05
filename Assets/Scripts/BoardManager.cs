@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class BoardManager : MonoBehaviour
+public class BoardManager : MonoBehaviour , IPointerDownHandler
 {
     #region CONSTANTS
     public const int BOARD_SIZE = 8;
@@ -72,14 +73,13 @@ public class BoardManager : MonoBehaviour
         return true;
     }
 
-    public List<Vector2> AvailablePieceMoves(Vector2 pieceGridPosition) {
-        List<Vector2> availableMovesList = new List<Vector2>();
-
-        return availableMovesList;
-    }
-
     private void OnMouseDown()
     {
+        Debug.Log("hola");
+    }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        throw new NotImplementedException();
     }
 }
