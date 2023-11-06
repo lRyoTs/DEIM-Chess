@@ -7,7 +7,6 @@ public class Piece
 {
     private Vector2 pieceGridPosition;
     private GameObject pieceGameObject;
-    private List<Vector2> availableMoveList = new List<Vector2>();
     private BoardTile currentTile;
 
     public Piece() {
@@ -41,6 +40,7 @@ public class Piece
         if (IsValidMove(tile.GetTileGridPosition()) ){
             currentTile.SetTileFree(); //previous tile set free
             
+            //Move to new tile
             pieceGridPosition = tile.GetTileGridPosition();
             pieceGameObject.transform.position = pieceGridPosition;
             
@@ -53,8 +53,10 @@ public class Piece
     {
         //Queen valid moves = same row || same column || diagonal move
         if (gridPosition.x == pieceGridPosition.x || gridPosition.y == pieceGridPosition.y || (Mathf.Abs(gridPosition.x-pieceGridPosition.x)== Mathf.Abs(gridPosition.y - pieceGridPosition.y))) {
+            Debug.Log("Valid move");
             return true;
         }
+        Debug.Log("Invalid move");
         return false;
     }
 

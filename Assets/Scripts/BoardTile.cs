@@ -13,7 +13,7 @@ public class BoardTile : MonoBehaviour
     private void Awake()
     {
         this.tileGridPosition = transform.position;
-        this.isBusy = true;
+        this.isBusy = false;
     }
 
     public bool IsBusy()
@@ -41,7 +41,6 @@ public class BoardTile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        piece = GetComponent<Piece>();
-        piece.MoveToPosition(this);
+        piece.MoveToPosition(this);     
     }
 }

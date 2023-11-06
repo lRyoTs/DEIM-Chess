@@ -85,4 +85,11 @@ public class BoardManager : MonoBehaviour
         }
         return true;
     }
+
+    public void SetupAllTIles(Piece piece) {
+        foreach (BoardTile tile in tileList)
+        {
+            tile.Setup(piece);
+        }
+    }
 }
