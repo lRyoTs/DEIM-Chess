@@ -8,6 +8,7 @@ public class Piece
     private Vector2 pieceGridPosition;
     private GameObject pieceGameObject;
     private List<Vector2> availableMoveList = new List<Vector2>();
+    private BoardTile currentTile;
 
     public Piece() {
         SpawnPiece();
@@ -18,7 +19,7 @@ public class Piece
         do
         {
             pieceGridPosition = SpawnRandomGridPosition();
-        } while (!BoardManager.instance.IsTileBusy(pieceGridPosition));
+        } while (!BoardManager.instance.IsTileBusy(this));
 
         //Spawn object in the free tile
         pieceGameObject = new GameObject("Piece");
@@ -35,11 +36,16 @@ public class Piece
         return pieceGridPosition;
     }
 
-    public void MoveToPosition(Vector2 gridPosition) {
+    public void MoveToPosition(BoardTile tile) {
 
-        if (IsValidMove(gridPosition)) {
-            pieceGridPosition = gridPosition;
+        if (IsValidMove(tile.GetTileGridPosition()) ){
+            currentTile.SetTileFree(); //previous tile set free
+            
+            pieceGridPosition = tile.GetTileGridPosition();
             pieceGameObject.transform.position = pieceGridPosition;
+            
+            currentTile = tile;
+            currentTile.SetTileBusy();
         }
     }
 
@@ -50,5 +56,9 @@ public class Piece
             return true;
         }
         return false;
+    }
+
+    public void Setup(BoardTile tile) {
+        this.currentTile = tile;
     }
 }

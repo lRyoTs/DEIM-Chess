@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.U2D;
 
-public class BoardManager : MonoBehaviour , IPointerDownHandler
+public class BoardManager : MonoBehaviour
 {
     #region CONSTANTS
     public const int BOARD_SIZE = 8;
     public const float BOARD_SPACING = 0.5f;
     #endregion
-    private List<BoardTile> tileList;
+    [SerializeField] private List<BoardTile> tileList;
 
 
     public static BoardManager instance { get; private set;}
@@ -41,21 +42,33 @@ public class BoardManager : MonoBehaviour , IPointerDownHandler
         }
     }
 
-    private BoardTile CreateTile(Sprite spriteColor, Vector2 gridPos) {
+    private GameObject CreateTile(Sprite spriteColor, Vector2 gridPos) {
 
-        BoardTile newTile = new BoardTile(gridPos,spriteColor);
-        newTile.SetParent(gameObject.transform);
+        GameObject tileGameObject = new GameObject("Tile", typeof(SpriteRenderer), typeof(BoxCollider2D));
+        SpriteRenderer tileSpriteRenderer = tileGameObject.GetComponent<SpriteRenderer>();
+        tileSpriteRenderer.sortingOrder = -1;
+        tileSpriteRenderer.sprite = spriteColor;
+        BoxCollider2D tileCollider = tileGameObject.GetComponent<BoxCollider2D>();
+        tileCollider.isTrigger = true;
+        tileCollider.size = Vector2.one;
+
+        tileGameObject.transform.position = gridPos;
+        tileGameObject.transform.parent = gameObject.transform;
+
+        BoardTile newTile = tileGameObject.AddComponent<BoardTile>();
+
         tileList.Add(newTile);
-        return newTile;
+        return tileGameObject;
     }
 
-    public bool IsTileBusy(Vector2 pieceGridPosition) {
+    public bool IsTileBusy(Piece piece) {
         
         //We search the tile
         foreach (var tile in tileList)
         {
             //We found a free tile
-            if ((tile.GetTileGridPosition() == pieceGridPosition) && !tile.IsBusy()){
+            if ((tile.GetTileGridPosition() == piece.GetPieceGridPosition()) && !tile.IsBusy()){
+                piece.Setup(tile);
                 tile.SetTileBusy();
                 return true;
             }
@@ -71,15 +84,5 @@ public class BoardManager : MonoBehaviour , IPointerDownHandler
             }
         }
         return true;
-    }
-
-    private void OnMouseDown()
-    {
-        Debug.Log("hola");
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        throw new NotImplementedException();
     }
 }

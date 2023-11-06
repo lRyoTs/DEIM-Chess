@@ -18,6 +18,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-        piece = new Piece();
+        //piece = new Piece();
     }
 }
